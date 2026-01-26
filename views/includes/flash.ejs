@@ -1,0 +1,80 @@
+<style>
+.alert {
+    border-radius: 12px !important; 
+    border: none !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    padding: 1rem 1.5rem !important;
+    font-weight: 500;
+    font-size: 0.95rem;
+}
+
+
+.alert-success {
+    background-color: #e6f6ec !important;
+    color: #1a7f37 !important;
+}
+
+
+.alert-danger {
+    background-color: #fff1f2 !important;
+    color: #fe424d !important;
+}
+
+.btn-close:focus {
+    box-shadow: none !important;
+}
+
+
+.fade {
+    transition: opacity 0.2s linear, transform 0.2s ease-out;
+}
+
+.alert.show {
+    transform: translateY(10px);
+}
+
+@media (max-width: 768px) {
+    .flash-container {
+        position: fixed;
+        top: 80px; 
+        left: 50%;
+        transform: translateX(-50%);
+        width: 90%;
+        z-index: 1050; 
+        pointer-events: none; 
+    }
+
+    .alert {
+        pointer-events: auto;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.15) !important;
+        margin-bottom: 0 !important;
+        border: 1px solid rgba(0,0,0,0.05) !important;
+    }
+}
+</style>
+
+<div class="flash-container">
+  <% if (success && success.length) { %>
+    <div class="row justify-content-center mt-3">
+      <div class="col-11 col-sm-10 col-md-8 col-lg-6">
+        <div class="alert alert-success alert-dismissible fade show text-center" role="alert">
+          <i class="fa-solid fa-circle-check me-2"></i>
+          <%= success %>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      </div>
+    </div>
+  <% } %>
+
+  <% if (error && error.length) { %>
+    <div class="row justify-content-center mt-3">
+      <div class="col-11 col-sm-10 col-md-8 col-lg-6">
+        <div class="alert alert-danger alert-dismissible fade show text-center" role="alert">
+          <i class="fa-solid fa-circle-exclamation me-2"></i>
+          <%= error %>
+          <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+        </div>
+      </div>
+    </div>
+  <% } %>
+</div>

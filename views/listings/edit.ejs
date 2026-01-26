@@ -1,0 +1,200 @@
+<% layout("/layouts/boilerplate.ejs") %>
+
+<style>
+  .edit-card {
+    border: 1px solid #ebebeb;
+    border-radius: 12px;
+    padding: 2.5rem;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+    background: white;
+  }
+
+  /* FORM CONTROLS */
+  .form-control, .form-select {
+    border-radius: 8px !important;
+    padding: 0.6rem 1rem;
+    border: 1px solid #b0b0b0;
+  }
+
+  .form-control:focus, .form-select:focus {
+    border-color: #fe424d;
+    box-shadow: 0 0 0 0.25rem rgba(254, 66, 77, 0.1);
+  }
+
+  .form-label {
+    font-weight: 500;
+    color: #484848;
+    margin-bottom: 0.5rem;
+  }
+
+  /* BRAND BUTTON STYLE */
+  .btn-update {
+    background-color: #fe424d !important; 
+    border: none !important;
+    border-radius: 8px !important;
+    font-weight: 600;
+    padding: 0.6rem 2rem !important; 
+    transition: 0.2s;
+    color: white !important;
+    min-width: 180px; 
+  }
+
+  .btn-update:hover {
+    background-color: #d93943 !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  }
+
+  .original-img-label {
+    font-size: 0.9rem;
+    color: #717171;
+    margin-bottom: 0.8rem;
+  }
+
+  h3 {
+    font-weight: 700;
+    letter-spacing: -0.5px;
+  }
+
+  
+  @media (max-width: 768px) {
+    .edit-card {
+      padding: 1.5rem; 
+    }
+
+   
+    .btn-update {
+      min-width: 140px !important;      
+      padding: 0.5rem 1.2rem !important; 
+      font-size: 0.9rem !important;  
+      border-radius: 6px !important;
+    }
+
+    .original-img-label {
+      font-size: 0.85rem;
+    }
+  }
+</style>
+
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-12 col-sm-11 col-md-10 col-lg-8 col-xl-7">
+      
+      <div class="edit-card">
+        <h3 class="mb-4 text-center">Edit Your Listing</h3>
+
+        <form 
+          method="POST" 
+          action="/listings/<%= listing._id %>?_method=PUT" 
+          novalidate 
+          class="needs-validation"
+          enctype="multipart/form-data"
+        >
+
+          <div class="mb-3">
+            <label class="form-label">Title</label>
+            <input 
+              name="listing[title]" 
+              value="<%= listing.title %>" 
+              type="text" 
+              class="form-control" 
+              required
+            >
+            <div class="invalid-feedback">Please enter a Title</div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Description</label>
+            <textarea 
+              name="listing[description]" 
+              class="form-control" 
+              rows="4"
+              required
+            ><%= listing.description %></textarea>
+            <div class="invalid-feedback">Please enter a short Description</div>
+          </div>
+
+          <div class="row mb-3 align-items-end">
+            <div class="col-md-4 mb-3 mb-md-0 text-center text-md-start">
+              <label class="original-img-label d-block">Original Listing Image</label>
+              <img 
+                src="<%= originalImageUrl %>" 
+                class="img-fluid rounded shadow-sm border"
+                style="height: 120px; width: 100%; object-fit: cover;"
+                alt="Original image"
+              >
+            </div>
+            <div class="col-md-8">
+              <label class="form-label">Upload New Image</label>
+              <input 
+                name="image" 
+                type="file" 
+                class="form-control"
+              />
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-12 col-md-4 mb-3">
+              <label class="form-label">Price</label>
+              <div class="input-group">
+                <span class="input-group-text">₹</span>
+                <input 
+                  name="listing[price]" 
+                  value="<%= listing.price %>" 
+                  type="number" 
+                  class="form-control" 
+                  required
+                >
+              </div>
+              <div class="invalid-feedback">Price should be valid</div>
+            </div>
+
+            <div class="col-12 col-md-8 mb-3">
+              <label class="form-label">Country</label>
+              <input 
+                name="listing[country]" 
+                value="<%= listing.country %>" 
+                type="text" 
+                class="form-control" 
+                required
+              >
+              <div class="invalid-feedback">Country name should be valid</div>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Location</label>
+            <input 
+              name="listing[location]" 
+              value="<%= listing.location %>" 
+              type="text" 
+              class="form-control" 
+              required
+            >
+            <div class="invalid-feedback">Location should be valid</div>
+          </div>
+
+          <div class="mb-4">
+            <label class="form-label">House Type / Category</label>
+            <select name="listing[category]" class="form-select" required>
+              <option value="">Select a category</option>
+              <% const cats = ["Trending", "Rooms", "Iconic Cities", "Mountains", "Castles", "Amazing Pools", "Camping", "Farms", "Arctic"]; %>
+              <% for(let cat of cats) { %>
+                <option value="<%= cat %>" <%= listing.category === cat ? 'selected' : '' %>><%= cat %></option>
+              <% } %>
+            </select>
+            <div class="invalid-feedback">Please select a category</div>
+          </div>
+
+          <div class="text-center mt-4">
+            <button class="btn btn-update">
+              Update Listing
+            </button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,136 @@
+<% layout("/layouts/boilerplate.ejs") %>
+
+<style>
+  
+  .login-card {
+    border: 1px solid #ebebeb;
+    border-radius: 12px;
+    padding: 2.5rem;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+    background: white;
+  }
+
+  .form-control {
+    border-radius: 8px !important;
+    padding: 0.6rem 1rem;
+    border: 1px solid #b0b0b0;
+  }
+
+  .form-control:focus {
+    border-color: #fe424d;
+    box-shadow: 0 0 0 0.25rem rgba(254, 66, 77, 0.1);
+  }
+
+  
+  .btn-login {
+    background-color: #fe424d !important;
+    border: none !important;
+    border-radius: 8px !important;
+    font-weight: 600;
+    padding: 0.6rem 2.5rem !important; 
+    transition: 0.2s;
+    color: white !important;
+    min-width: 150px;
+  }
+
+  .btn-login:hover {
+    background-color: #d93943 !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  }
+
+  .form-label {
+    font-weight: 500;
+    color: #484848;
+  }
+
+.btn-login{
+    background-color: #fe424d !important;
+    border: none !important;
+    border-radius: 8px !important;
+    font-weight: 600;
+    padding: 0.6rem 2.5rem !important; 
+    transition: 0.2s;
+    color: white !important;
+    min-width: 150px;
+}
+
+
+@media (max-width: 768px) {
+    .btn-login, .btn-signup {
+        padding: 0.4rem 1.5rem !important; 
+        font-size: 0.85rem !important;
+        min-width: 120px !important;
+        width: auto !important; 
+    }
+
+ 
+    .text-center.mt-4 {
+        margin-top: 1.5rem !important;
+    }
+}
+</style>
+
+<div class="container my-5">
+  <div class="row justify-content-center">
+
+    <div class="col-12 col-sm-10 col-md-8 col-lg-6 col-xl-4">
+      
+      <div class="login-card">
+        <h2 class="mb-4 text-center fw-bold">Login</h2>
+
+        <form 
+          action="/login" 
+          method="POST" 
+          class="needs-validation"
+          novalidate
+        >
+
+          <div class="mb-3">
+            <label for="email" class="form-label">Email ID</label>
+            <input 
+              name="email" 
+              id="email" 
+              type="email" 
+              class="form-control" 
+              placeholder="Enter your email"
+              required
+            >
+            <div class="invalid-feedback">
+              Please enter a valid email
+            </div>
+          </div>
+
+          <div class="mb-4">
+            <label for="password" class="form-label">Password</label>
+            <input 
+              name="password" 
+              id="password" 
+              type="password" 
+              class="form-control" 
+              placeholder="Enter your password"
+              required
+            >
+            <div class="invalid-feedback">
+              Please enter your password
+            </div>
+          </div>
+
+          <div class="text-center mt-4">
+            <button class="btn btn-login">
+              Login
+            </button>
+          </div>
+
+          <div class="mt-4 text-center">
+            <small class="text-muted">
+              New to WanderLust? <a href="/signup" class="text-decoration-none" style="color: #fe424d; font-weight: 600;">Create an account</a>
+            </small>
+          </div>
+
+        </form>
+      </div>
+
+    </div>
+  </div>
+</div>

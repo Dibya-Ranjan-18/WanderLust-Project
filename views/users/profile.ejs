@@ -1,0 +1,195 @@
+<% layout("/layouts/boilerplate.ejs") %>
+
+<style>
+
+  .profile-card {
+    border: none;
+    border-radius: 1.5rem;
+    padding: 3rem;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    background: white;
+    text-align: center;
+    margin-bottom: 4rem;
+    transition: transform 0.3s ease;
+  }
+
+  .profile-avatar {
+    width: 130px;
+    height: 130px;
+    background-color: #fff1f2;
+    color: #fe424d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 3.8rem;
+    border-radius: 50%;
+    margin: 0 auto 1.5rem;
+    box-shadow: 0 4px 12px rgba(254, 66, 77, 0.15);
+  }
+
+  .profile-name {
+    font-weight: 800;
+    color: #222;
+    margin-bottom: 0.5rem;
+    font-size: 1.8rem;
+  }
+
+  .profile-email {
+    color: #717171;
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+  }
+
+  .btn-logout {
+    background-color: #fe424d !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 12px !important;
+    padding: 0.8rem 2rem !important;
+    font-weight: 700;
+    transition: 0.3s cubic-bezier(0.2, 0, 0, 1) !important;
+  }
+
+  .btn-logout:hover {
+    background-color: #d93943 !important;
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(217, 57, 67, 0.3);
+  }
+
+  .btn-outline-dark {
+    border-radius: 12px !important;
+    padding: 0.8rem 2rem !important;
+    font-weight: 600;
+  }
+
+ 
+  .section-title {
+    font-weight: 800;
+    margin-bottom: 2rem;
+    color: #222;
+    font-size: 1.6rem;
+  }
+
+  .user-listing-card {
+    border: none !important;
+    margin-bottom: 3rem;
+    background: transparent !important;
+    transition: transform 0.3s cubic-bezier(0.2, 0, 0, 1);
+  }
+
+  .card-img-container {
+    position: relative;
+    overflow: hidden;
+    border-radius: 1.2rem !important;
+    aspect-ratio: 1 / 1;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  }
+
+  .user-listing-card img {
+    height: 100% !important;
+    width: 100%;
+    object-fit: cover;
+    transition: transform 0.6s cubic-bezier(0.33, 1, 0.68, 1);
+  }
+
+  .user-listing-card:hover {
+    transform: translateY(-8px);
+    cursor: pointer;
+  }
+
+  .user-listing-card:hover img {
+    transform: scale(1.1);
+    filter: brightness(90%);
+  }
+
+  .listing-title {
+    font-weight: 700;
+    font-size: 1.1rem;
+    margin-top: 1rem;
+    display: block;
+    color: #222;
+  }
+
+  .listing-price {
+    color: #444;
+    font-weight: 500;
+  }
+
+ 
+  @media (max-width: 768px) {
+    .profile-card { padding: 2rem 1.5rem; }
+    .profile-avatar { width: 100px; height: 100px; font-size: 3rem; }
+
+    
+    .row-cols-mobile-1 > .col {
+      flex: 0 0 100% !important;
+      max-width: 100% !important;
+      padding-left: 15px !important;
+      padding-right: 15px !important;
+    }
+
+    .user-listing-card img {
+      aspect-ratio: 16 / 10;
+    }
+    
+    .section-title { text-align: center; }
+    .card-body { text-align: center; }
+  }
+</style>
+
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-12 col-md-8 col-lg-6">
+      <div class="profile-card">
+        <div class="profile-avatar">
+          <i class="fa-solid fa-user"></i>
+        </div>
+        <h2 class="profile-name"><%= user.name %></h2>
+        <p class="profile-email"><%= user.email %></p>
+        <hr class="my-4">
+        <div class="d-grid gap-3">
+          <a href="/listings" class="btn btn-outline-dark">Back to Explore</a>
+          <a href="/logout" class="btn btn-logout">Logout</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="mb-5" style="opacity: 0.1;">
+
+  <div class="row">
+    <div class="col-12">
+      <h3 class="section-title">Your Listings</h3>
+    </div>
+  </div>
+    
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-mobile-1">
+    <% if(allListings.length > 0) { %>
+      <% for(let listing of allListings) { %>
+        <div class="col">
+          <a href="/listings/<%= listing._id %>" class="text-decoration-none text-dark">
+            <div class="card user-listing-card">
+              <div class="card-img-container">
+                <img src="<%= listing.image.url %>" class="card-img-top" alt="listing image">
+              </div>
+              <div class="card-body px-1">
+                <span class="listing-title"><%= listing.title %></span>
+                <p class="listing-price">
+                  <b>&#8377; <%= listing.price.toLocaleString("en-IN") %></b> / night
+                </p>
+              </div>
+            </div>
+          </a>
+        </div>
+      <% } %>
+    <% } else { %>
+      <div class="col-12 text-center py-5">
+        <div class="mb-4" style="font-size: 3rem; color: #ddd;">
+          <i class="fa-solid fa-house-chimney-crack"></i>
+        </div>
+        <p class="text-muted fs-5">You haven't created any listings yet.</p>
+        <a href="/listings/new" class="btn btn-outline-danger mt-2" style="border-radius: 10px;">Create Your First Listing</a>
+      </div>
+    <% } %>
+  </div>
+</div>

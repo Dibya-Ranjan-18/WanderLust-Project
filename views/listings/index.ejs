@@ -1,0 +1,215 @@
+<% layout("/layouts/boilerplate.ejs") %>
+
+<style>
+  .listing-link {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .listing-card {
+    border: none !important;
+    margin-bottom: 2rem;
+    transition: transform 0.3s cubic-bezier(0.2, 0, 0, 1);
+    background-color: transparent !important;
+  }
+
+  .card-img-container {
+    position: relative;
+    overflow: hidden;
+    border-radius: 1rem !important;
+    aspect-ratio: 1 / 1; 
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  .listing-card img {
+    object-fit: cover;
+    width: 100%;
+    height: 100% !important;
+    transition: transform 0.6s cubic-bezier(0.33, 1, 0.68, 1);
+  }
+
+  .listing-card:hover {
+    transform: translateY(-5px);
+  }
+
+  .listing-card:hover img {
+    transform: scale(1.1); 
+    filter: brightness(92%);
+  }
+
+  .listing-card:hover .card-img-container {
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  }
+
+  .card-body {
+    padding: 0.75rem 0.2rem !important;
+  }
+
+  .card-title-text {
+    font-size: 1.05rem;
+    font-weight: 600;
+    margin-bottom: 2px;
+    display: block;
+  }
+
+  .card-location-text {
+    color: #717171;
+    font-size: 0.95rem;
+  }
+
+  .card-price-text {
+    font-weight: 500;
+    margin-top: 4px;
+    color: #222;
+  }
+
+  .tax-id { 
+    display: none; 
+    font-weight: 600;
+    color: #fe424d;
+    font-size: 0.85rem;
+    transition: all 0.3s ease;
+  }
+
+  .filters-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    position: sticky;
+    top: 0; 
+    background: #fff;
+    z-index: 10;
+    padding: 1rem 0;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #efefef;
+  }
+
+  .filters-scroll {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    overflow-x: auto;
+    flex: 1;
+    white-space: nowrap;
+    scrollbar-width: none;
+  }
+
+  .filters-scroll::-webkit-scrollbar { display: none; }
+
+  .filter {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 65px;
+    gap: 0.4rem;
+    opacity: 0.6;
+    text-decoration: none;
+    color: #222;
+    transition: 0.2s;
+    border-bottom: 2px solid transparent;
+  }
+
+  .filter:hover, .filter.active {
+    opacity: 1;
+    color: #000; 
+    border-bottom: 2px solid #000;
+  }
+
+  .filter i { font-size: 1.3rem; }
+  .filter p { font-size: 0.75rem; margin: 0; font-weight: 500; }
+
+  .tax-toggle {
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 0.75rem 1rem;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    transition: 0.2s;
+  }
+
+  @media (max-width: 768px) {
+    .filters-wrapper { 
+      flex-wrap: wrap; 
+      gap: 1rem;
+    }
+    
+    .tax-toggle { 
+      width: 100%; 
+      justify-content: center; 
+    }
+
+    .row-cols-mobile-1 > .col {
+      flex: 0 0 100% !important;
+      max-width: 100% !important;
+    }
+
+    .card-img-container {
+      aspect-ratio: 16 / 10;
+    }
+  }
+</style>
+
+<div class="container">
+  <div class="filters-wrapper">
+    <div class="filters-scroll">
+      <a href="/listings" class="filter <%= selectedCategory === '' ? 'active' : '' %>">
+        <i class="fa-solid fa-list"></i>
+        <p>All</p>
+      </a>
+
+      <% 
+        const categories = ["Trending","Rooms","Iconic Cities","Mountains","Castles","Amazing Pools","Camping","Farms","Arctic"];
+        const icons = ["fa-fire","fa-bed","fa-city","fa-mountain","fa-fort-awesome","fa-person-swimming","fa-campground","fa-cow","fa-snowflake"];
+      %>
+
+      <% categories.forEach((cat, i) => { %>
+        <a href="/listings?category=<%= cat %>" class="filter <%= selectedCategory === cat ? 'active' : '' %>">
+          <i class="fa-solid <%= icons[i] %>"></i>
+          <p><%= cat %></p>
+        </a>
+      <% }) %>
+    </div>
+
+    <div class="tax-toggle">
+      <div class="form-check form-switch mb-0 d-flex align-items-center gap-2">
+        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" style="cursor: pointer;">
+        <label class="form-check-label tax-text" for="flexSwitchCheckDefault" style="cursor: pointer; font-size: 0.9rem; font-weight: 500;">
+          Display total after tax
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 row-cols-mobile-1 mt-3">
+    <% for(let listing of allListings){ %>
+      <div class="col">
+        <a href="/listings/<%= listing._id %>" class="listing-link">
+          <div class="card listing-card">
+            <div class="card-img-container">
+              <img src="<%= listing.image.url %>" class="card-img-top" alt="listing image">
+            </div>
+            <div class="card-body">
+              <span class="card-title-text"><%= listing.title %></span>
+              <span class="card-location-text"><%= listing.category %></span><br>
+              <div class="card-price-text">
+                <b>&#8377; <%= listing.price.toLocaleString("en-IN") %></b> / night
+                <span class="tax-id"> &nbsp;+18% GST</span>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+    <% } %>
+  </div>
+</div>
+
+<script>
+  document.getElementById("flexSwitchCheckDefault").addEventListener("change", (e) => {
+    let taxInfo = document.getElementsByClassName("tax-id");
+    for(let info of taxInfo) {
+      info.style.display = e.target.checked ? "inline" : "none";
+    }
+  });
+</script>

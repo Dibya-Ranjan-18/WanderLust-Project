@@ -1,0 +1,193 @@
+<% layout("/layouts/boilerplate.ejs") %>
+
+<style>
+  .create-card {
+    border: 1px solid #ebebeb;
+    border-radius: 12px;
+    padding: 2.5rem;
+    box-shadow: 0 6px 16px rgba(0,0,0,0.08);
+    background: white;
+  }
+
+  .form-control, .form-select {
+    border-radius: 8px !important;
+    padding: 0.6rem 1rem;
+    border: 1px solid #b0b0b0;
+  }
+
+  .form-control:focus, .form-select:focus {
+    border-color: #fe424d;
+    box-shadow: 0 0 0 0.25rem rgba(254, 66, 77, 0.1);
+  }
+
+  
+  .btn-add {
+    background-color: #fe424d !important; 
+    border: none !important;
+    border-radius: 8px !important;
+    font-weight: 600;
+    padding: 0.6rem 2rem !important; 
+    transition: 0.2s;
+    color: white !important;
+    min-width: 150px; 
+  }
+
+  .btn-add:hover {
+    background-color: #d93943 !important;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  }
+
+  .form-label {
+    font-weight: 500;
+    color: #484848;
+    margin-bottom: 0.5rem;
+  }
+
+  h3 {
+    font-weight: 700;
+    letter-spacing: -0.5px;
+  }
+
+
+  @media (max-width: 768px) {
+    .create-card {
+      padding: 1.5rem; 
+    }
+
+    .btn-add {
+      padding: 0.5rem 1.5rem !important; 
+      font-size: 0.9rem !important;
+      min-width: 130px !important; 
+      width: auto !important; 
+      border-radius: 6px !important;
+    }
+
+    h3 {
+      font-size: 1.5rem !important; 
+    }
+  }
+</style>
+
+<div class="container my-5">
+  <div class="row justify-content-center">
+    <div class="col-12 col-sm-11 col-md-10 col-lg-8 col-xl-7">
+      
+      <div class="create-card">
+        <h3 class="mb-4 text-center">Create a New Listing</h3>
+
+        <form 
+          method="POST" 
+          action="/listings" 
+          novalidate 
+          class="needs-validation"
+          enctype="multipart/form-data"
+        >
+
+          <div class="mb-3">
+            <label class="form-label">Title</label>
+            <input 
+              name="listing[title]" 
+              placeholder="Give your place a catchy name" 
+              type="text" 
+              class="form-control" 
+              required
+            >
+            <div class="invalid-feedback">Please enter a Title</div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Description</label>
+            <textarea 
+              name="listing[description]" 
+              placeholder="What makes your place special?" 
+              class="form-control" 
+              rows="4"
+              required
+            ></textarea>
+            <div class="invalid-feedback">Please enter a short Description</div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Upload Listing Image</label>
+            <input 
+              name="image" 
+              type="file" 
+              class="form-control"
+              required
+            >
+            <div class="invalid-feedback">Please upload an image for your listing</div>
+          </div>
+
+          <div class="row">
+            <div class="col-12 col-md-4 mb-3">
+              <label class="form-label">Price</label>
+              <div class="input-group">
+                <span class="input-group-text">₹</span>
+                <input 
+                  name="listing[price]" 
+                  placeholder="1200" 
+                  class="form-control" 
+                  required
+                >
+              </div>
+              <div class="invalid-feedback">Please enter a valid price</div>
+            </div>
+
+            <div class="col-12 col-md-8 mb-3">
+              <label class="form-label">Country</label>
+              <input 
+                name="listing[country]" 
+                placeholder="India" 
+                type="text" 
+                class="form-control" 
+                required
+              >
+              <div class="invalid-feedback">Please enter the country</div>
+            </div>
+          </div>
+
+          <div class="mb-3">
+            <label class="form-label">Location</label>
+            <input 
+              name="listing[location]" 
+              placeholder="Bhubaneswar, Odisha" 
+              type="text" 
+              class="form-control" 
+              required
+            >
+            <div class="invalid-feedback">Please enter the exact location</div>
+          </div>
+
+          <div class="mb-4">
+            <label class="form-label">House Type / Category</label>
+            <select 
+              name="listing[category]" 
+              class="form-select" 
+              required
+            >
+              <option value="">Select a category</option>
+              <option value="Trending">Trending</option>
+              <option value="Rooms">Rooms</option>
+              <option value="Mountains">Mountains</option>
+              <option value="Iconic Cities">Iconic Cities</option>
+              <option value="Amazing Pools">Amazing Pools</option>
+              <option value="Castles">Castles</option>
+              <option value="Farms">Farms</option>
+              <option value="Camping">Camping</option>
+              <option value="Arctic">Arctic</option>
+            </select>
+            <div class="invalid-feedback">Please select a category</div>
+          </div>
+
+          <div class="text-center mt-4">
+            <button class="btn btn-add">
+              Add Listing
+            </button>
+          </div>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
