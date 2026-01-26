@@ -1,11 +1,73 @@
+<style>
+    footer {
+    height: 8rem;
+    background-color: #ebebeb;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+}
+
+.f-info-socials {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem; /* Space between icons */
+    margin-bottom: 0.5rem;
+}
+
+/* Fixes the blue link color */
+.f-info-socials a {
+    text-decoration: none;
+    color: #222222; /* Dark color instead of blue */
+    font-size: 1.4rem;
+    transition: all 0.3s ease;
+}
+
+/* Hover effect with your theme color */
+.f-info-socials a:hover {
+    color: #cf0614; 
+    transform: scale(1.15); /* Subtle pop effect */
+}
+
+.f-info-brand, .f-info-links {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.f-info-links a {
+    text-decoration: none;
+    color: #222222;
+    margin: 0 0.5rem;
+}
+
+.f-info-links a:hover {
+    text-decoration: underline;
+}
+
+.f-info {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+</style>
 <footer>
     <div class="f-info">
         <div class="f-info-socials">
-            <i class="fa-brands fa-square-facebook"></i>
-            <i class="fa-brands fa-square-instagram"></i>
-            <i class="fa-brands fa-linkedin"></i>
+            <a href="https://youtube.com/@mr_d.r._1886?si=plcyOuWwrQXQB3tX" target="_blank">
+                <i class="fa-brands fa-youtube"></i>
+            </a>
+            <a href="https://www.instagram.com/_dibya_18_?igsh=czBub2JzaW8weHFn" target="_blank">
+                <i class="fa-brands fa-square-instagram"></i>
+            </a>
+            <a href="https://www.linkedin.com/in/dibya-ranjan-das18?utm_source=share&utm_campaign=share_via&utm_content=profile&utm_medium=android_app" target="_blank">
+                <i class="fa-brands fa-linkedin"></i>
+            </a>
         </div>
-        <div class="f-info-brand">&copy; Wanderlist Private Limited</div>
+        <div class="f-info-brand">&copy; Wanderlust Private Limited</div>
         <div class="f-info-links">
             <a href="/privacy">Privacy</a>
             <a href="/terms">Terms</a>

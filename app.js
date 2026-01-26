@@ -28,7 +28,6 @@ const userRouter = require("./routes/user");
 // ================= DATABASE CONNECTION =================
 const dbUrl = process.env.ATLASDB_URL;
 
-
 async function main() {
     await mongoose.connect(dbUrl);
 }
@@ -55,12 +54,14 @@ const store = MongoStore.create({
     mongoUrl : dbUrl,
     touchAfter : 24 * 3600,
 });
+
 store.on("error", (err)=>{
     console.log("Error in mongo session store",err);
-})
+});
+
 app.use(session({
-    store:store,
-    secret: process.env.SECRET,
+    store: store,
+    secret: process.env.SECRET || "mysupersecretcode",
     resave: false,
     saveUninitialized: false,
     cookie: {
@@ -76,7 +77,6 @@ app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 
-
 passport.use(new LocalStrategy({ usernameField: "email" }, User.authenticate()));
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
@@ -90,6 +90,12 @@ app.use((req, res, next) => {
 });
 
 // ================= ROUTES =================
+
+
+app.get("/", (req, res) => {
+    res.redirect("/listings");
+});
+
 app.use("/listings", listingRouter);
 app.use("/listings/:id/reviews", reviewRouter);
 app.use("/", userRouter);
@@ -105,6 +111,8 @@ app.use((err, req, res, next) => {
 });
 
 // ================= SERVER =================
-app.listen(8080, () => {
-    console.log("Server started on port 8080");
+const port = process.env.PORT || 8080;
+
+app.listen(port, () => {
+    console.log(`Server started on port ${port}`);
 });
