@@ -1,6 +1,6 @@
 const Listing = require("../models/listing");
 
-// ================= INDEX =================
+// INDEX 
 module.exports.index = async (req, res) => {
     const { category } = req.query;
     let allListings;
@@ -14,12 +14,12 @@ module.exports.index = async (req, res) => {
     res.render("listings/index.ejs", { allListings, selectedCategory: category || "" });
 };
 
-// ================= NEW FORM =================
+// NEW FORM 
 module.exports.renderNewForm = (req, res) => {
     res.render("listings/new.ejs");
 };
 
-// ================= SHOW =================
+// SHOW
 module.exports.showListing = async (req, res) => {
     const { id } = req.params;
     const listing = await Listing.findById(id)
@@ -34,18 +34,18 @@ module.exports.showListing = async (req, res) => {
     res.render("listings/show.ejs", { listing });
 };
 
-// ================= CREATE =================
+//  CREATE 
 module.exports.createListing = async (req, res) => {
     const { listing: listingData } = req.body;
 
-    // Handle image upload
+   
     listingData.image = req.file
         ? { url: req.file.path, filename: req.file.filename }
         : { url: "https://images.unsplash.com/photo-1505691723518-36a5ac3be353", filename: "listingimage" };
 
     listingData.owner = req.user._id;
 
-    // Ensure category is valid
+    
     const validCategories = ["Trending", "Rooms", "Iconic Cities", "Luxury", "Budget"];
     if (!listingData.category || !validCategories.includes(listingData.category)) {
         listingData.category = "Trending"; 
@@ -58,7 +58,7 @@ module.exports.createListing = async (req, res) => {
     res.redirect("/listings");
 };
 
-// ================= EDIT FORM =================
+//  EDIT FORM 
 module.exports.renderEditForm = async (req, res) => {
     const { id } = req.params;
     const listing = await Listing.findById(id);
@@ -73,7 +73,7 @@ module.exports.renderEditForm = async (req, res) => {
     res.render("listings/edit.ejs", { listing, originalImageUrl });
 };
 
-// ================= UPDATE =================
+//  UPDATE
 module.exports.updateListing = async (req, res) => {
     const { id } = req.params;
     const { listing: listingData } = req.body;
@@ -104,13 +104,13 @@ module.exports.updateListing = async (req, res) => {
         listing.image = { url: req.file.path, filename: req.file.filename };
     }
 
-    await listing.save(); // 
+    await listing.save(); 
 
     req.flash("success", "Listing Updated!");
     res.redirect(`/listings/${id}`);
 };
 
-// ================= DELETE =================
+// DELETE
 module.exports.destroyListing = async (req, res) => {
     const { id } = req.params;
     await Listing.findByIdAndDelete(id);

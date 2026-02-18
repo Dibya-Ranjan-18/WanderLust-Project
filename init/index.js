@@ -8,7 +8,7 @@ const Listing = require("../models/listing.js");
 
 const dbUrl = process.env.ATLASDB_URL;
 
-// ================= INITIALIZE LOGIC =================
+//INITIALIZE LOGIC 
 const initDB = async () => {
     try {
         await Listing.deleteMany({});
@@ -28,7 +28,7 @@ const initDB = async () => {
     }
 };
 
-// ================= RUN CONNECTION & SEED =================
+// RUN CONNECTION & SEED 
 async function main() {
     try {
         await mongoose.connect(dbUrl);

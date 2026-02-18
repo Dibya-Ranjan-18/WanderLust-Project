@@ -26,7 +26,7 @@ const reviewRouter = require("./routes/review");
 const userRouter = require("./routes/user");
 const bookingRouter = require("./routes/booking"); 
 
-// ================= DATABASE CONNECTION =================
+// DATABASE CONNECTION 
 const dbUrl = process.env.ATLASDB_URL;
 
 async function main() {
@@ -41,7 +41,7 @@ main()
         console.log("MongoDB Connection Error:", err);
     });
 
-// ================= CONFIG =================
+//  CONFIG 
 app.engine("ejs", engine);
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -51,7 +51,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname, "public")));
 
-// ================= SESSION =================
+// SESSION 
 const store = MongoStore.create({
     mongoUrl : dbUrl,
     touchAfter : 24 * 3600,
@@ -75,7 +75,7 @@ app.use(session({
 
 app.use(flash());
 
-// ================= PASSPORT =================
+// PASSPORT
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -83,30 +83,29 @@ passport.use(new LocalStrategy({ usernameField: "email" }, User.authenticate()))
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-// ================= LOCALS =================
+//  LOCALS 
 app.use((req, res, next) => {
     res.locals.success = req.flash("success");
     res.locals.error = req.flash("error");
     res.locals.currUser = req.user;
     
-    // Tracks items in the session-based cart for the navbar badge
     res.locals.cartCount = req.session.cart ? req.session.cart.length : 0; 
     next();
 });
 
-// ================= ROUTES =================
+// ROUTES 
 
 app.get("/", (req, res) => {
     res.redirect("/listings");
 });
 
-// SIMULATED SUCCESS ROUTE: Clears the cart after the user "pays"
+// Clears the cart after the user "pays"
 app.get("/success", (req, res) => {
     if (!req.isAuthenticated()) {
         req.flash("error", "You must be logged in!");
         return res.redirect("/login");
     }
-    req.session.cart = []; // Empty the cart
+    req.session.cart = []; 
     req.flash("success", "Booking Successful! Your trip is confirmed.");
     res.redirect("/listings");
 });
@@ -116,7 +115,7 @@ app.use("/listings/:id/reviews", reviewRouter);
 app.use("/", userRouter);
 app.use("/", bookingRouter); 
 
-// ================= ERRORS =================
+//  ERRORS 
 app.all("*", (req, res, next) => {
     next(new ExpressError(404, "Page Not Found"));
 });
@@ -126,7 +125,7 @@ app.use((err, req, res, next) => {
     res.status(statusCode).render("error.ejs", { message }); 
 });
 
-// ================= SERVER =================
+// SERVER 
 const port = process.env.PORT || 8080;
 
 app.listen(port, () => {

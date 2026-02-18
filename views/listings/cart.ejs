@@ -1,7 +1,6 @@
 <% layout("/layouts/boilerplate.ejs") %>
 
 <style>
-    /* Adding the missing Coral button style */
     .btn-coral {
         background-color: #fe424d !important;
         color: white !important;
@@ -14,13 +13,11 @@
         box-shadow: 0 4px 12px rgba(254, 66, 77, 0.3);
     }
 
-    /* Styling the Secure Transaction section */
     .secure-text {
         color: #717171;
         font-size: 0.85rem;
     }
 
-    /* Making the image look consistent with the screenshot */
     .cart-img {
         height: 110px;
         width: 100%;
@@ -118,12 +115,10 @@
 
     if(checkoutBtn) {
         checkoutBtn.addEventListener('click', () => {
-            // UI Feedback
             checkoutBtn.innerHTML = `<span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span> Securing your stay...`;
             checkoutBtn.disabled = true;
             checkoutBtn.classList.replace('btn-coral', 'btn-secondary');
 
-            // Simulate Delay
             setTimeout(() => {
                 window.location.href = "/success";
             }, 3000); 

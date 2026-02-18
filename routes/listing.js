@@ -13,7 +13,7 @@ const upload = multer({ storage });
 
 const categories = ["Trending", "Rooms", "Iconic Cities", "Luxury", "Budget"];
 
-// ================= SEARCH ROUTE =================
+// SEARCH ROUTE 
 router.get("/search", wrapAsync(async (req, res) => {
     const { q } = req.query;
 
@@ -36,21 +36,21 @@ router.get("/search", wrapAsync(async (req, res) => {
     });
 }));
 
-// ================= INDEX & CREATE =================
+//  INDEX & CREATE 
 router.route("/")
     .get(wrapAsync(listingController.index))
     .post(isLoggedIn, upload.single("image"), wrapAsync(listingController.createListing));
 
-// ================= NEW =================
+// NEW
 router.get("/new", isLoggedIn, listingController.renderNewForm);
 
-// ================= SHOW / UPDATE / DELETE =================
+// SHOW / UPDATE / DELETE 
 router.route("/:id")
     .get(wrapAsync(listingController.showListing))
     .put(isLoggedIn, isOwner, upload.single("image"), validateListing, wrapAsync(listingController.updateListing))
     .delete(isLoggedIn, isOwner, wrapAsync(listingController.destroyListing));
 
-// ================= EDIT =================
+// EDIT 
 router.get("/:id/edit", isLoggedIn, isOwner, wrapAsync(listingController.renderEditForm));
 
 module.exports = router;
