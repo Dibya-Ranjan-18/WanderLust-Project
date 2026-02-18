@@ -24,6 +24,7 @@ const User = require("./models/user");
 const listingRouter = require("./routes/listing");
 const reviewRouter = require("./routes/review");
 const userRouter = require("./routes/user");
+const bookingRouter = require("./routes/booking"); 
 
 // ================= DATABASE CONNECTION =================
 const dbUrl = process.env.ATLASDB_URL;
@@ -45,6 +46,7 @@ app.engine("ejs", engine);
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
+app.use(express.json()); 
 app.use(express.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 app.use(express.static(path.join(__dirname, "public")));
@@ -56,7 +58,7 @@ const store = MongoStore.create({
 });
 
 store.on("error", (err)=>{
-    console.log("Error in mongo session store",err);
+    console.log("Error in mongo session store", err);
 });
 
 app.use(session({
@@ -86,22 +88,36 @@ app.use((req, res, next) => {
     res.locals.success = req.flash("success");
     res.locals.error = req.flash("error");
     res.locals.currUser = req.user;
+    
+    // Tracks items in the session-based cart for the navbar badge
+    res.locals.cartCount = req.session.cart ? req.session.cart.length : 0; 
     next();
 });
 
 // ================= ROUTES =================
 
-
 app.get("/", (req, res) => {
+    res.redirect("/listings");
+});
+
+// SIMULATED SUCCESS ROUTE: Clears the cart after the user "pays"
+app.get("/success", (req, res) => {
+    if (!req.isAuthenticated()) {
+        req.flash("error", "You must be logged in!");
+        return res.redirect("/login");
+    }
+    req.session.cart = []; // Empty the cart
+    req.flash("success", "Booking Successful! Your trip is confirmed.");
     res.redirect("/listings");
 });
 
 app.use("/listings", listingRouter);
 app.use("/listings/:id/reviews", reviewRouter);
 app.use("/", userRouter);
+app.use("/", bookingRouter); 
 
 // ================= ERRORS =================
-app.all("/*splat", (req, res, next) => {
+app.all("*", (req, res, next) => {
     next(new ExpressError(404, "Page Not Found"));
 });
 
